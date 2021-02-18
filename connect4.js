@@ -54,8 +54,12 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  for(let y=board.length-1; y >= 0; y--) {
+    if(!board[y][x]) {
+      return y;
+    } 
+  }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -85,7 +89,7 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  board[y,x] = 1
+  board[y][x] = 1
   placeInTable(y, x);
 
   // check for win
