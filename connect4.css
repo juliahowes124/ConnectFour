@@ -13,6 +13,7 @@
   margin: 5px;
   width: 80%;
   height: 80%;
+  border-radius: 50%;
 }
 
 /* TODO: make pieces red/blue,  depending on player 1/2 piece */
@@ -25,4 +26,12 @@
 
 #column-top td:hover {
   background-color: gold;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
 }
