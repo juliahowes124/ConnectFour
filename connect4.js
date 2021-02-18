@@ -10,7 +10,7 @@
 const WIDTH = 7;
 const HEIGHT = 6;
 
-let currPlayer = 1; // active player: 1 or 2
+let currPlayer = 1; // active player: 0 or 2
 let board; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
@@ -85,7 +85,7 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
+  board[y,x] = 1
   placeInTable(y, x);
 
   // check for win
@@ -94,10 +94,12 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
+  if(board.every(spot => spot !== null)) {
+    return endGame("It's a Tie!");
+  }
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
