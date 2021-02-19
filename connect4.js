@@ -133,4 +133,19 @@ function checkForWin() {
 makeBoard();
 makeHtmlBoard();
 
+function resetGame() {
+  resetHtmlBoard();
+  makeBoard();
+}
+
+function resetHtmlBoard() {
+  let cells = document.getElementsByTagName('td');
+  for(let cell of cells) {
+    let child = cell.getElementsByClassName('piece')[0]
+    if(child) {
+      cell.removeChild(child);
+    }
+  }
+}
+
 

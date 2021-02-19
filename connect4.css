@@ -1,17 +1,28 @@
 /* game board table */
 
+#board {
+  margin: 5% auto 
+}
+
 #board td {
   width: 50px;
   height: 50px;
   border: solid 1px #666;
 }
 
+button {
+  background-color: lightgray;
+  border: 2px solid darkgray;
+  padding: 5px;
+  margin-left: 30%;
+}
+
 /* pieces are div within game table cells: draw as colored circles */
 
 .piece {
   margin: 5px;
-  width: 40px;
-  height: 40px;
+  width: 80%;
+  height: 80%;
   border-radius: 50%;
   animation: drop .5s ease-in;
 }
@@ -35,7 +46,7 @@
 }
 
 @keyframes drop {
-  from { transform: translateY(-400px)}
+  from { transform: translateY(-600px)}
   to { transform: translateY(0)}
 }
 
