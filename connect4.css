@@ -1,11 +1,18 @@
 /* game board table */
 
+#game {
+  width: 50%;
+  position: relative;
+  margin: 5% auto;
+}
+
 #board {
-  margin: 5% auto 
+  margin: 5%;
+  width: 90%;
 }
 
 #board td {
-  width: 50px;
+  width: 10%;
   height: 50px;
   border: solid 1px #666;
 }
@@ -14,7 +21,11 @@ button {
   background-color: lightgray;
   border: 2px solid darkgray;
   padding: 5px;
-  margin-left: 30%;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  cursor:pointer;
+  display: none;
 }
 
 /* pieces are div within game table cells: draw as colored circles */
@@ -51,3 +62,18 @@ button {
 }
 
 /* try doing the animation with javascript to determine top value */
+
+#overlay {
+  background-color: black;
+  opacity: 50%;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: none;
+}
+
+#winner-display {
+  display: none;
+  height: 50px;
+  width: 100px;
+}

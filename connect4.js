@@ -65,7 +65,14 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 function endGame(msg) {
-  alert(msg);
+  let overlay = document.getElementById('overlay');
+  let button = document.getElementsByTagName('button')[0];
+  let display = document.getElementById('winner-display');
+  overlay.setAttribute('style', 'display: block');
+  button.setAttribute('style', 'display: block');
+  display.setAttribute('style', 'display: block');
+  display.innerText = msg;
+
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -136,6 +143,12 @@ makeHtmlBoard();
 function resetGame() {
   resetHtmlBoard();
   makeBoard();
+  let overlay = document.getElementById('overlay');
+  let button = document.getElementsByTagName('button')[0];
+  let display = document.getElementById('winner-display');
+  overlay.setAttribute('style', 'display: none');
+  button.setAttribute('style', 'display: none');
+  display.setAttribute('style', 'display: none');
 }
 
 function resetHtmlBoard() {
