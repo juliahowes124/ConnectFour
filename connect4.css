@@ -9,14 +9,12 @@
 /* pieces are div within game table cells: draw as colored circles */
 
 .piece {
-  /* TODO: make into circles */
   margin: 5px;
-  width: 80%;
-  height: 80%;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  animation: drop .5s ease-in;
 }
-
-/* TODO: make pieces red/blue,  depending on player 1/2 piece */
 
 /* column-top is table row of clickable areas for each column */
 
@@ -35,3 +33,10 @@
 .blue {
   background-color: blue;
 }
+
+@keyframes drop {
+  from { transform: translateY(-400px)}
+  to { transform: translateY(0)}
+}
+
+/* try doing the animation with javascript to determine top value */
