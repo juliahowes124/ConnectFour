@@ -1,45 +1,80 @@
 /* game board table */
-
 #game {
-  width: 50%;
-  position: relative;
+  height: 500px;
   margin: 5% auto;
+  position: relative;
+  width: 500px;
 }
 
 #board {
-  margin: 5%;
-  width: 90%;
+  height: 100%;
+  width: 100%;
 }
 
+/* board cell */
 #board td {
-  width: 10%;
-  height: 50px;
   border: solid 1px #666;
+  height: 10%;
+  width: 10%;
 }
 
+/* overlay that disables board at end of game */
+#overlay {
+  background-color: black;
+  display: none;
+  height: 100%;
+  opacity: 40%;
+  position: absolute;
+  width: 100%;
+}
+
+/* div that displays winner at end of game */
+#winner-display-wrapper {
+  background-color: lightgray;
+  border-radius: 8px;
+  display: none;
+  font-family: sans-serif;
+  font-size: 20px;
+  left: 25%;
+  position: absolute;
+  text-align: center;
+  top: 30%;
+  width: 50%;
+}
+
+/* reset button */
 button {
   background-color: lightgray;
   border: 2px solid darkgray;
+  cursor: pointer;
+  display: none;
+  left: 40%;
   padding: 5px;
   position: absolute;
   top: 50%;
-  left: 40%;
-  cursor:pointer;
-  display: none;
+  width: 20%
 }
 
-/* pieces are div within game table cells: draw as colored circles */
-
+/* pieces are divs within game table cells: colored circles */
 .piece {
+  animation: drop .5s ease-in;
+  border-radius: 50%;
+  height: 80%;
   margin: 5px;
   width: 80%;
-  height: 80%;
-  border-radius: 50%;
-  animation: drop .5s ease-in;
+}
+
+/* game piece color classes */
+.red {
+  background-color: red;
+  border: 2px solid darkred;
+}
+.blue {
+  background-color: blue;
+  border: 2px solid darkblue;
 }
 
 /* column-top is table row of clickable areas for each column */
-
 #column-top td {
   border: dashed 1px lightgray;
 }
@@ -48,32 +83,10 @@ button {
   background-color: gold;
 }
 
-.red {
-  background-color: red;
-}
-
-.blue {
-  background-color: blue;
-}
-
+/* animate pieces to drop into place */
 @keyframes drop {
   from { transform: translateY(-600px)}
   to { transform: translateY(0)}
 }
 
-/* try doing the animation with javascript to determine top value */
 
-#overlay {
-  background-color: black;
-  opacity: 50%;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  display: none;
-}
-
-#winner-display {
-  display: none;
-  height: 50px;
-  width: 100px;
-}

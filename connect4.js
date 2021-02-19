@@ -1,5 +1,4 @@
 "use strict";
-
 /** Connect Four
  * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
@@ -31,6 +30,7 @@ function makeHtmlBoard() {
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
+
   htmlBoard.append(top);
 
   // dynamically creates the main part of html board using HEIGHT AND WIDTH for rows and columns
@@ -63,16 +63,71 @@ function placeInTable(y, x) {
   selectedCell.appendChild(newPiece);
 }
 
-/** endGame: announce game end */
+/** endGame: disable board with overlay, and display winner and reset button */
 function endGame(msg) {
   let overlay = document.getElementById('overlay');
   let button = document.getElementsByTagName('button')[0];
-  let display = document.getElementById('winner-display');
+  let display = document.getElementById('winner-display-wrapper');
   overlay.setAttribute('style', 'display: block');
   button.setAttribute('style', 'display: block');
   display.setAttribute('style', 'display: block');
-  display.innerText = msg;
+  display.childNodes[0].innerText= msg;
+}
 
+/** resetGame: clear boards and remove overlay with message and reset button */
+function resetGame() {
+  resetHtmlBoard();
+  makeBoard();
+  let overlay = document.getElementById('overlay');
+  let button = document.getElementsByTagName('button')[0];
+  let display = document.getElementById('winner-display-wrapper');
+  overlay.setAttribute('style', 'display: none');
+  button.setAttribute('style', 'display: none');
+  display.setAttribute('style', 'display: none');
+}
+
+/** resetHtmlBoard: clear UI board by removing all pieces */
+function resetHtmlBoard() {
+  let cells = document.getElementsByTagName('td');
+  for(let cell of cells) {
+    let child = cell.getElementsByClassName('piece')[0]
+    if(child) {
+      cell.removeChild(child);
+    }
+  }
+}
+
+/** checkForWin: check board cell-by-cell for "does a win start here?" */
+function checkForWin() {
+  /** _win:
+   * takes input array of 4 cell coordinates [ [y, x], [y, x], [y, x], [y, x] ]
+   * returns true if all are legal coordinates for a cell & all cells match
+   * currPlayer */
+
+  function _win(cells) {
+    //check if all cell coordinates are within the board's boundaries
+    let legalCoords = cells.every(([y,x]) => y>=0 && y<HEIGHT && x>=0 && x<WIDTH);
+    if(!legalCoords) return false;
+    let sameColor = cells.every(([y,x]) => board[y][x] === currPlayer);
+    return sameColor;
+  }
+
+  // using HEIGHT and WIDTH, generate "check list" of coordinates
+  // for 4 cells (starting here) for each of the different
+  // ways to win: horizontal, vertical, diagonalDR, diagonalDL
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
+      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      let vert = [[y,x], [y+1, x], [y+2, x], [y+3, x]];
+      let diagDL = [[y,x], [y-1, x-1], [y-2, x-2], [y-3, x-3]];
+      let diagDR = [[y,x], [y-1, x+1], [y-2, x+2], [y-3, x+3]];
+
+      // find winner (only checking each win-possibility as needed)
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        return true;
+      }
+    }
+  }
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -103,62 +158,8 @@ function handleClick(evt) {
   currPlayer = (currPlayer === 1) ? 2 : 1;
 }
 
-/** checkForWin: check board cell-by-cell for "does a win start here?" */
-function checkForWin() {
-  /** _win:
-   * takes input array of 4 cell coordinates [ [y, x], [y, x], [y, x], [y, x] ]
-   * returns true if all are legal coordinates for a cell & all cells match
-   * currPlayer */
-
-  function _win(cells) {
-    //check if all cell coordinates are within the board's boundaries
-    let legalLocations = cells.every(([y,x]) => y>=0 && y<HEIGHT && x>=0 && x<WIDTH);
-    if(!legalLocations) return false;
-
-    let sameColor = cells.every(([y,x]) => board[y][x] === currPlayer);
-    return sameColor;
-  }
-
-  // using HEIGHT and WIDTH, generate "check list" of coordinates
-  // for 4 cells (starting here) for each of the different
-  // ways to win: horizontal, vertical, diagonalDR, diagonalDL
-  for (let y = 0; y < HEIGHT; y++) {
-    for (let x = 0; x < WIDTH; x++) {
-      let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert = [[y,x], [y+1, x], [y+2, x], [y+3, x]];
-      let diagDL = [[y,x], [y-1, x-1], [y-2, x-2], [y-3, x-3]];
-      let diagDR = [[y,x], [y-1, x+1], [y-2, x+2], [y-3, x+3]];
-
-      // find winner (only checking each win-possibility as needed)
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
-        return true;
-      }
-    }
-  }
-}
-
 makeBoard();
 makeHtmlBoard();
 
-function resetGame() {
-  resetHtmlBoard();
-  makeBoard();
-  let overlay = document.getElementById('overlay');
-  let button = document.getElementsByTagName('button')[0];
-  let display = document.getElementById('winner-display');
-  overlay.setAttribute('style', 'display: none');
-  button.setAttribute('style', 'display: none');
-  display.setAttribute('style', 'display: none');
-}
-
-function resetHtmlBoard() {
-  let cells = document.getElementsByTagName('td');
-  for(let cell of cells) {
-    let child = cell.getElementsByClassName('piece')[0]
-    if(child) {
-      cell.removeChild(child);
-    }
-  }
-}
 
 
