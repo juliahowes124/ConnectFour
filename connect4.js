@@ -19,7 +19,24 @@ class Game {
     this.inGame = true;
   }
 
+  validateColors(...colors) {
+    for(let color of colors) {
+      let style = new Option().style;
+      style.color = color;
+      if(style.color === '') return false;
+    }
+    return true;
+  }
+
   startGame() {
+    let color1 = document.getElementById('player1').value;
+    let color2 = document.getElementById('player2').value;
+    
+    if(!this.validateColors(color1, color2)) {
+      alert("Please enter valid colors.");
+      return;
+    }
+    
     this.makeBoard();
     this.inGame = true;
     const board = document.getElementById('board');
@@ -29,8 +46,7 @@ class Game {
     display.setAttribute('style', 'display: none');
     board.innerHTML = '';
     this.makeHtmlBoard();
-    let color1 = document.getElementById('player1').value;
-    let color2 = document.getElementById('player2').value;
+    
     this.p1 = new Player(color1, 1);
     this.p2 = new Player(color2, 2);
     this.currPlayer = this.p1;
