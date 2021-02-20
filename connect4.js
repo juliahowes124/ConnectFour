@@ -5,6 +5,12 @@
  * board fills (tie)
  */
 
+class ComputerPlayer {
+  constructor() {
+    this.color = 'red';
+    this.number = 2;
+  }
+}
 class Player {
   constructor(color, num) {
     this.color = color;
@@ -23,7 +29,7 @@ class Game {
     for(let color of colors) {
       let style = new Option().style;
       style.color = color;
-      if(style.color === '') return false;
+      if(style.color === '' || style.color === 'white' || style.color === "transparent") return false;
     }
     return true;
   }
@@ -31,7 +37,7 @@ class Game {
   startGame() {
     let color1 = document.getElementById('player1').value;
     let color2 = document.getElementById('player2').value;
-    
+    this.gameMode = document.getElementById('game-mode').value;
     if(!this.validateColors(color1, color2)) {
       alert("Please enter valid colors.");
       return;
@@ -46,9 +52,15 @@ class Game {
     display.setAttribute('style', 'display: none');
     board.innerHTML = '';
     this.makeHtmlBoard();
-    
-    this.p1 = new Player(color1, 1);
-    this.p2 = new Player(color2, 2);
+
+    if(this.gameMode === "multi") {
+      this.p1 = new Player(color1, 1);
+      this.p2 = new Player(color2, 2);
+    } else {
+      this.p1 = new Player(color1, 1);
+      this.p2 = new ComputerPlayer();
+    }
+
     this.currPlayer = this.p1;
     let currentPiece = document.getElementsByClassName('current-piece')[0];
     currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
@@ -58,7 +70,6 @@ class Game {
     this.board = new Array(this.height)
       .fill(null)
       .map(() => new Array(this.width).fill(null));
-      console.log(this.board);
   }
 
   makeHtmlBoard() {
@@ -159,6 +170,34 @@ class Game {
 
     let x = +evt.target.id;
 
+    let y = this.findSpotForCol(x);
+    if (y === null) {
+      return;
+    }
+
+    this.board[y][x] = this.currPlayer.number;
+    this.placeInTable(y, x);
+
+    if (this.checkForWin()) {
+      return this.endGame(`Player ${this.currPlayer.number} won!`);
+    }
+
+    if (this.board.every((row) => row.every((col) => col !== null))) {
+      return this.endGame("It's a Tie!");
+    }
+
+    this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
+    let currentPiece = document.getElementsByClassName('current-piece')[0];
+    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
+
+    if(!this.multiMode && this.currPlayer === this.p2) {
+      setTimeout(() => this.playComputerMove(), 500);
+    }
+  }
+
+  playComputerMove() {
+    let x = Math.floor(Math.random() * (this.width));
+    console.log(x);
     let y = this.findSpotForCol(x);
     if (y === null) {
       return;
