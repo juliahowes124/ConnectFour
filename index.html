@@ -4,25 +4,28 @@
   <link href="connect4.css" rel="stylesheet">
 </head>
 <body>
-<div>
   <h1>Connect Four</h1>
-  <div class="form">
-    <div>
-      <label for="player1">Color 1</label>
-      <input type="text" id="player1"></input>
+  <div class="top-info">
+    <div class="form">
+      <div class="input-div">
+        <input type="text" id="player1" placeholder="Color 1"></input>
+      </div>
+      <div class="input-div">
+        <input type="text" id="player2" placeholder="Color 2"></input>
+      </div>
+      <button>START GAME</button>
     </div>
-    <div>
-      <label for="player2">Color 2</label>
-      <input type="text" id="player2"></input>
+    <div class="current">
+      <p>Current Player</p>
+      <div class="current-piece"></div>
     </div>
-    <button>START GAME</button>
   </div>
+  
   <div id="game">
     <div id="overlay"></div>
     <div id="winner-display-wrapper"><p></p></div>
     <table id="board"></table>
   </div>
-</div>
 
 <script src="connect4.js"></script>
 

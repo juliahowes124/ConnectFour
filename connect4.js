@@ -34,6 +34,8 @@ class Game {
     this.p1 = new Player(color1, 1);
     this.p2 = new Player(color2, 2);
     this.currPlayer = this.p1;
+    let currentPiece = document.getElementsByClassName('current-piece')[0];
+    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
   }
 
   makeBoard() {
@@ -158,6 +160,8 @@ class Game {
     }
 
     this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
+    let currentPiece = document.getElementsByClassName('current-piece')[0];
+    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
   }
 }
 
