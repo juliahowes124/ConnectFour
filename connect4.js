@@ -65,6 +65,8 @@ class Game {
     this.currPlayer = this.p1;
     this.setCurrentColor();
     select.disabled = true;
+    let currentDisplay = document.getElementById('current');
+    currentDisplay.setAttribute('style', 'display: block');
   }
 
   setCurrentColor() {

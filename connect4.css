@@ -33,12 +33,13 @@ button {
 }
 
 /* Div displaying current player */
-.current {
+#current {
   text-align: center;
   width: 50%;
+  display: none;
 }
 
-.current p {
+#current p {
   margin-top: 0;
 }
 
