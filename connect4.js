@@ -27,6 +27,10 @@ class Game {
         style.color === "white" ||
         style.color === "transparent"
       ) {
+        alert("Please enter valid colors.")
+        return false;
+      } else if (this.gameMode === "single" && style.color === "red") {
+        alert("You can't use red for single player.");
         return false;
       }
     }
@@ -50,10 +54,7 @@ class Game {
       this.p2 = new ComputerPlayer();
     }
 
-    if (!this.validateColors(colorInputs)) {
-      alert("Please enter valid colors.");
-      return;
-    }
+    if (!this.validateColors(colorInputs)) return
 
     this.removeHtmlBoard();
     this.removeOverlay();
