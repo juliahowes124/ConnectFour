@@ -38,7 +38,8 @@ class Game {
   }
 
   startGame() {
-    this.gameMode = document.getElementById("game-mode").value;
+    let select = document.getElementById("game-mode");
+    this.gameMode = select.value;
     let colorInputs;
 
     if (this.gameMode === "multi") {
@@ -63,7 +64,7 @@ class Game {
     this.inGame = true;
     this.currPlayer = this.p1;
     this.setCurrentColor();
-    
+    select.disabled = true;
   }
 
   setCurrentColor() {
@@ -138,6 +139,8 @@ class Game {
     display.setAttribute("style", "display: block");
     display.childNodes[0].innerText = msg;
     this.inGame = false;
+    let select = document.getElementById("game-mode");
+    select.disabled = false;
   }
 
   checkForWin() {
@@ -188,6 +191,7 @@ class Game {
 
   handleClick(evt) {
     if (!this.inGame) return;
+    if(this.gameMode === 'single' && this.currPlayer.number === 2) return;
 
     let x = +evt.target.id;
 
