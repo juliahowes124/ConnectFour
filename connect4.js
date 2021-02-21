@@ -1,13 +1,7 @@
 "use strict";
-/** Connect Four
- * Player 1 and 2 alternate turns. On each turn, a piece is dropped down a
- * column until a player gets four-in-a-row (horiz, vert, or diag) or until
- * board fills (tie)
- */
-
 class ComputerPlayer {
   constructor() {
-    this.color = 'red';
+    this.color = "red";
     this.number = 2;
   }
 }
@@ -17,7 +11,6 @@ class Player {
     this.number = num;
   }
 }
-
 class Game {
   constructor(height = 6, width = 7) {
     this.height = height;
@@ -25,45 +18,71 @@ class Game {
     this.inGame = true;
   }
 
-  validateColors(...colors) {
-    for(let color of colors) {
+  validateColors(colors) {
+    for (let color of colors) {
       let style = new Option().style;
       style.color = color;
-      if(style.color === '' || style.color === 'white' || style.color === "transparent") return false;
+      if (
+        style.color === "" ||
+        style.color === "white" ||
+        style.color === "transparent"
+      ) {
+        return false;
+      }
     }
     return true;
   }
 
   startGame() {
-    let color1 = document.getElementById('player1').value;
-    let color2 = document.getElementById('player2').value;
-    this.gameMode = document.getElementById('game-mode').value;
-    if(!this.validateColors(color1, color2)) {
-      alert("Please enter valid colors.");
-      return;
-    }
-    
-    this.makeBoard();
-    this.inGame = true;
-    const board = document.getElementById('board');
-    const overlay = document.getElementById('overlay');
-    const display = document.getElementById('winner-display-wrapper');
-    overlay.setAttribute('style', 'display: none');
-    display.setAttribute('style', 'display: none');
-    board.innerHTML = '';
-    this.makeHtmlBoard();
+    this.gameMode = document.getElementById("game-mode").value;
+    let colorInputs;
 
-    if(this.gameMode === "multi") {
+    if (this.gameMode === "multi") {
+      let color1 = document.getElementById("player1").value;
+      let color2 = document.getElementById("player2").value;
+      colorInputs = [color1, color2];
       this.p1 = new Player(color1, 1);
       this.p2 = new Player(color2, 2);
     } else {
-      this.p1 = new Player(color1, 1);
+      let color = document.getElementById("player1").value;
+      colorInputs = [color];
+      this.p1 = new Player(color, 1);
       this.p2 = new ComputerPlayer();
     }
 
+    if (!this.validateColors(colorInputs)) {
+      alert("Please enter valid colors.");
+      return;
+    }
+
+    this.removeHtmlBoard();
+    this.removeOverlay();
+    this.makeBoard();
+    this.makeHtmlBoard();
+    this.inGame = true;
     this.currPlayer = this.p1;
-    let currentPiece = document.getElementsByClassName('current-piece')[0];
-    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
+    this.setCurrentColor();
+    
+  }
+
+  setCurrentColor() {
+    let currentPiece = document.getElementsByClassName("current-piece")[0];
+    currentPiece.setAttribute(
+      "style",
+      `background-color: ${this.currPlayer.color}`
+    );
+  }
+
+  removeHtmlBoard() {
+    const board = document.getElementById("board");
+    board.innerHTML = "";
+  }
+
+  removeOverlay() {
+    const overlay = document.getElementById("overlay");
+    const display = document.getElementById("winner-display-wrapper");
+    overlay.setAttribute("style", "display: none");
+    display.setAttribute("style", "display: none");
   }
 
   makeBoard() {
@@ -120,23 +139,7 @@ class Game {
     this.inGame = false;
   }
 
-  resetGame() {
-    resetHtmlBoard();
-    makeBoard();
-    let overlay = document.getElementById("overlay");
-    let button = document.getElementsByTagName("button")[0];
-    let display = document.getElementById("winner-display-wrapper");
-    overlay.setAttribute("style", "display: none");
-    button.setAttribute("style", "display: none");
-    display.setAttribute("style", "display: none");
-  }
-
-  resetHtmlBoard() {
-    let htmlBoard = document.getElementById("board");
-    htmlBoard.innerHTML = '';
-  }
-
-  checkForWin() { 
+  checkForWin() {
     const _win = (cells) => {
       return cells.every(
         ([y, x]) =>
@@ -146,15 +149,34 @@ class Game {
           x < this.width &&
           this.board[y][x] === this.currPlayer.number
       );
-    }
+    };
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-
-        const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-        const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-        const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-        const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+        const horiz = [
+          [y, x],
+          [y, x + 1],
+          [y, x + 2],
+          [y, x + 3],
+        ];
+        const vert = [
+          [y, x],
+          [y + 1, x],
+          [y + 2, x],
+          [y + 3, x],
+        ];
+        const diagDR = [
+          [y, x],
+          [y + 1, x + 1],
+          [y + 2, x + 2],
+          [y + 3, x + 3],
+        ];
+        const diagDL = [
+          [y, x],
+          [y + 1, x - 1],
+          [y + 2, x - 2],
+          [y + 3, x - 3],
+        ];
 
         if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           return true;
@@ -163,10 +185,8 @@ class Game {
     }
   }
 
-
   handleClick(evt) {
-
-    if(!this.inGame) return; 
+    if (!this.inGame) return;
 
     let x = +evt.target.id;
 
@@ -187,17 +207,19 @@ class Game {
     }
 
     this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
-    let currentPiece = document.getElementsByClassName('current-piece')[0];
-    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
+    let currentPiece = document.getElementsByClassName("current-piece")[0];
+    currentPiece.setAttribute(
+      "style",
+      `background-color: ${this.currPlayer.color}`
+    );
 
-    if(!this.multiMode && this.currPlayer === this.p2) {
+    if (this.gameMode === "single" && this.currPlayer === this.p2) {
       setTimeout(() => this.playComputerMove(), 500);
     }
   }
 
   playComputerMove() {
-    let x = Math.floor(Math.random() * (this.width));
-    console.log(x);
+    let x = Math.floor(Math.random() * this.width);
     let y = this.findSpotForCol(x);
     if (y === null) {
       return;
@@ -215,11 +237,28 @@ class Game {
     }
 
     this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
-    let currentPiece = document.getElementsByClassName('current-piece')[0];
-    currentPiece.setAttribute('style', `background-color: ${this.currPlayer.color}`)
+    let currentPiece = document.getElementsByClassName("current-piece")[0];
+    currentPiece.setAttribute(
+      "style",
+      `background-color: ${this.currPlayer.color}`
+    );
   }
 }
 
 let game = new Game();
+let p2 = document.getElementById("player2");
+p2.setAttribute("style", "display: none");
+let mode = document.getElementById("game-mode");
+mode.addEventListener("change", handleModeSelect);
 let btn = document.getElementsByTagName("button")[0];
 btn.addEventListener("click", () => game.startGame());
+
+function handleModeSelect() {
+  let mode = document.getElementById("game-mode").value;
+  let p2 = document.getElementById("player2");
+  if (mode === "multi") {
+    p2.setAttribute("style", "display: block");
+  } else {
+    p2.setAttribute("style", "display: none");
+  }
+}

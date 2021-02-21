@@ -1,33 +1,15 @@
-h1 {
-  text-align: center;
-}
-
 body {
   font-family: sans-serif;
+  text-align: center;
 }
 
 .top-info {
   display: flex;
+  margin: auto;
   width: 500px;
-  margin: auto;
 }
 
-.current {
-  width: 50%;
-  text-align: center;
-}
-
-.current p{
-  margin-top: 0;
-}
-
-.current-piece {
-  height: 50px;
-  width: 50px;
-  border: 1px solid darkgray;
-  border-radius: 50%;
-  margin: auto;
-}
+/* form inputs */
 
 .form {
   display: flex;
@@ -35,18 +17,37 @@ body {
   width: 50%;
 }
 
-button {
-  width: fit-content;
-  padding: .5rem;
-  border: none;
-  border-radius: .2rem;
-  background-color: lightpink;
-  cursor: pointer;
-}
-
 .input-div {
   display: flex;
   margin-bottom: 1rem;
+}
+
+/* start button */
+button {
+  background-color: lightpink;
+  border: none;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  width: fit-content;
+}
+
+/* Div displaying current player */
+.current {
+  text-align: center;
+  width: 50%;
+}
+
+.current p {
+  margin-top: 0;
+}
+
+.current-piece {
+  border: 1px solid darkgray;
+  border-radius: 50%;
+  height: 50px;
+  margin: auto;
+  width: 50px;
 }
 
 /* game board table */
@@ -95,40 +96,17 @@ button {
   padding: 1rem;
 }
 
-#winner-display-wrapper p{
+#winner-display-wrapper p {
   margin: 0;
 }
 
-/* reset button
-button {
-  background-color: lightgray;
-  border: 2px solid darkgray;
-  cursor: pointer;
-  display: none;
-  left: 40%;
-  padding: 5px;
-  position: absolute;
-  top: 50%;
-  width: 20%
-} */
-
 /* pieces are divs within game table cells: colored circles */
 .piece {
-  animation: drop .5s ease-in;
+  animation: drop 0.5s ease-in;
   border-radius: 50%;
   height: 80%;
   margin: 5px;
   width: 80%;
-}
-
-/* game piece color classes */
-.red {
-  background-color: red;
-  border: 2px solid darkred;
-}
-.blue {
-  background-color: blue;
-  border: 2px solid darkblue;
 }
 
 /* column-top is table row of clickable areas for each column */
@@ -142,8 +120,10 @@ button {
 
 /* animate pieces to drop into place */
 @keyframes drop {
-  from { transform: translateY(-600px)}
-  to { transform: translateY(0)}
+  from {
+    transform: translateY(-600px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
-
-
