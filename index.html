@@ -5,41 +5,32 @@
 </head>
 <body>
   <h1>Connect Four</h1>
-  <div class="top-info">
+  <div class="game-wrapper">
     <div class="form">
-      <div class="input-div">
-        <select name="game-mode" id="game-mode">
-          <option value="1">1 Player</option>
-          <option value="2">2 Players</option>
-          <option value="3">3 Players</option>
-          <option value="4">4 Players</option>
-        </select>
-      </div>
-      <div class="input-div">
-        <input type="text" id="player1" placeholder="Color 1"></input>
-      </div>
-      <div class="input-div">
-        <input type="text" id="player2" placeholder="Color 2"></input>
-      </div>
-      <div class="input-div">
-        <input type="text" id="player3" placeholder="Color 3"></input>
-      </div>
-      <div class="input-div">
-        <input type="text" id="player4" placeholder="Color 4"></input>
-      </div>
+      <select name="game-mode" id="game-mode">
+        <option value="1">1 Player</option>
+        <option value="2">2 Players</option>
+        <option value="3">3 Players</option>
+        <option value="4">4 Players</option>
+      </select>
+      <input type="text" id="player1" placeholder="Color 1"></input>
+      <input type="text" id="player2" placeholder="Color 2"></input>
+      <input type="text" id="player3" placeholder="Color 3"></input>
+      <input type="text" id="player4" placeholder="Color 4"></input>
       <button>START GAME</button>
     </div>
+    <div id="game">
+      <div id="overlay"></div>
+      <div id="winner-display-wrapper"><p></p></div>
+      <table id="board"></table>
+    </div>
     <div id="current-player">
-      <p>Current Player</p>
+      <p>Current Player:</p>
       <div class="current-piece"></div>
     </div>
   </div>
   
-  <div id="game">
-    <div id="overlay"></div>
-    <div id="winner-display-wrapper"><p></p></div>
-    <table id="board"></table>
-  </div>
+ 
 
 <script src="connect4.js"></script>
 

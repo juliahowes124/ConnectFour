@@ -29,7 +29,7 @@ class Game {
       ) {
         alert("Please enter valid colors.")
         return false;
-      } else if (this.gameMode === "1" && style.color === this.p2.color) {
+      } else if (this.numPlayers === "1" && style.color === this.p2.color) {
         alert(`You can't use ${this.p2.color} for single player.`);
         return false;
       }
@@ -39,14 +39,14 @@ class Game {
 
   startGame() {
     let select = document.getElementById("game-mode");
-    this.gameMode = select.value;
+    this.numPlayers = select.value;
     let colorInputs = [];
 
-    if (this.gameMode === '1') {
+    if (this.numPlayers === '1') {
       this.p2 = new ComputerPlayer();
     }
 
-    for (let i = 1; i <= parseInt(this.gameMode); i++) {
+    for (let i = 1; i <= parseInt(this.numPlayers); i++) {
       let color = document.getElementById(`player${i}`).value;
       this[`p${i}`] = new Player(color, i);
       colorInputs.push(color);
@@ -97,6 +97,7 @@ class Game {
     let htmlBoard = document.getElementById("board");
     let top = document.createElement("tr");
     top.setAttribute("id", "column-top");
+    top.setAttribute('style', "cursor: pointer")
     top.addEventListener("click", (e) => this.handleClick(e));
     for (let x = 0; x < this.width; x++) {
       let headCell = document.createElement("td");
@@ -191,12 +192,12 @@ class Game {
 
   handleClick(evt) {
     if (!this.inGame) return;
-    if (this.gameMode === '1' && this.currPlayer.number === 2) return;
+    if (this.numPlayers === '1' && this.currPlayer.number === 2) return;
 
     let x = +evt.target.id;
     this.moveAndUpdatePlayer(x);
 
-    if (this.gameMode === "1" && this.currPlayer === this.p2) {
+    if (this.numPlayers === "1" && this.currPlayer === this.p2) {
       setTimeout(() => this.playComputerMove(), 500);
     }
   }
@@ -223,10 +224,10 @@ class Game {
       return this.endGame("It's a Tie!");
     }
 
-    if (this.gameMode === '1') {
+    if (this.numPlayers === '1') {
       this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
     } else {
-      this.currPlayer = this.currPlayer.number == this.gameMode ? this.p1 : this[`p${this.currPlayer.number + 1}`];
+      this.currPlayer = this.currPlayer.number == this.numPlayers ? this.p1 : this[`p${this.currPlayer.number + 1}`];
     }
     this.setCurrentColor();
   }

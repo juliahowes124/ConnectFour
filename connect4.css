@@ -3,33 +3,38 @@ body {
   text-align: center;
 }
 
-.top-info {
+h1 {
+  font-size: 2.5rem;
+}
+
+.game-wrapper {
   display: flex;
-  margin: auto;
-  width: 500px;
+  justify-content: space-around;
 }
 
 /* form inputs */
 .form {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  margin: 2rem;
+  width: 15%;
 }
 
-.input-div {
-  display: flex;
-  margin-bottom: 1rem;
+#player1 {
+  margin: 1rem 0;
 }
 
 #player2, #player3, #player4 {
   display: none;
+  margin-bottom: 1rem;
 }
 
 /* start button */
 button {
-  background-color: lightpink;
+  background-color: lightgray;
   border: none;
   border-radius: 0.2rem;
+  box-shadow: 1px 1px grey;
   cursor: pointer;
   padding: 0.5rem;
   width: fit-content;
@@ -38,8 +43,9 @@ button {
 /* Div displaying current player */
 #current-player {
   text-align: center;
-  width: 50%;
   display: none;
+  margin: 2rem;
+  width: 15%;
 }
 
 #current-player p {
@@ -47,7 +53,6 @@ button {
 }
 
 .current-piece {
-  border: 1px solid darkgray;
   border-radius: 50%;
   height: 50px;
   margin: auto;
@@ -57,7 +62,6 @@ button {
 /* game board table */
 #game {
   height: 500px;
-  margin: 5% auto;
   position: relative;
   width: 500px;
 }
