@@ -1,4 +1,12 @@
 "use strict";
+
+const htmlBoard = document.getElementById("board");
+const currentDisplay = document.getElementById('current-player');
+const currentPiece = document.getElementById("current-piece");
+const display = document.getElementById("winner-display-wrapper");
+const overlay = document.getElementById("overlay");
+const select = document.getElementById("game-mode");
+const startBtn = document.getElementsByTagName("button")[0];
 class ComputerPlayer {
   constructor() {
     this.color = "blue";
@@ -18,6 +26,7 @@ class Game {
     this.inGame = true;
   }
 
+  /* Ensures that the user entered visible colors, and if single player, did not pick the same color as the computer. */
   validateColors(colors) {
     for (let color of colors) {
       let style = new Option().style;
@@ -37,64 +46,58 @@ class Game {
     return true;
   }
 
+  //creates players and assigns colors (if valid), displays new game board and current player
   startGame() {
-    let select = document.getElementById("game-mode");
     this.numPlayers = select.value;
-    let colorInputs = [];
+    let colorInputs = []; //colors that will be checked with the validator
 
-    if (this.numPlayers === '1') {
-      this.p2 = new ComputerPlayer();
-    }
-
+    //create new players based on the numPlayers selected
     for (let i = 1; i <= parseInt(this.numPlayers); i++) {
       let color = document.getElementById(`player${i}`).value;
       this[`p${i}`] = new Player(color, i);
       colorInputs.push(color);
     }
 
+    if (this.numPlayers === '1') {
+      this.p2 = new ComputerPlayer();
+    }
+    this.currPlayer = this.p1;
+    this.setCurrentColor();
+
     if (!this.validateColors(colorInputs)) return
 
-    this.removeHtmlBoard();
+    htmlBoard.innerHTML = "";
     this.removeOverlay();
     this.makeBoard();
     this.makeHtmlBoard();
     this.inGame = true;
-    this.currPlayer = this.p1;
-    this.setCurrentColor();
     select.disabled = true;
-    let currentDisplay = document.getElementById('current-player');
-    currentDisplay.setAttribute('style', 'display: block');
-
+    currentDisplay.setAttribute('style', 'display: block'); //display current player piece
   }
 
+  //updates color of current player on the UI
   setCurrentColor() {
-    let currentPiece = document.getElementsByClassName("current-piece")[0];
     currentPiece.setAttribute(
       "style",
       `background-color: ${this.currPlayer.color}`
     );
   }
 
-  removeHtmlBoard() {
-    const board = document.getElementById("board");
-    board.innerHTML = "";
-  }
-
+  //removes overlay that displays the winner of the most recent game
   removeOverlay() {
-    const overlay = document.getElementById("overlay");
-    const display = document.getElementById("winner-display-wrapper");
     overlay.setAttribute("style", "display: none");
     display.setAttribute("style", "display: none");
   }
 
+  //create a 2D array filled with null that has this.height "rows" and this.width "columns"
   makeBoard() {
     this.board = new Array(this.height)
       .fill(null)
       .map(() => new Array(this.width).fill(null));
   }
 
+  //fills table with a top "control" row, and this.height # of rows all with this.width # of cells, all with unique ids 
   makeHtmlBoard() {
-    let htmlBoard = document.getElementById("board");
     let top = document.createElement("tr");
     top.setAttribute("id", "column-top");
     top.setAttribute('style', "cursor: pointer")
@@ -116,6 +119,8 @@ class Game {
     }
   }
 
+  //looks for the first available empty cell in column x, starting at bottom row and moving up
+  //if all spots are already full, return null
   findSpotForCol(x) {
     for (let y = this.board.length - 1; y >= 0; y--) {
       if (!this.board[y][x]) {
@@ -125,6 +130,7 @@ class Game {
     return null;
   }
 
+  //create new piece and assign its color, then append it to the selected div on the board
   placeInTable(y, x) {
     const piece = document.createElement("div");
     piece.classList.add("piece");
@@ -133,17 +139,19 @@ class Game {
     spot.append(piece);
   }
 
+  //displays message in the overlay display div, switches inGame to false to prevent future handling of clicks
   endGame(msg) {
-    let overlay = document.getElementById("overlay");
-    let display = document.getElementById("winner-display-wrapper");
     overlay.setAttribute("style", "display: block");
     display.setAttribute("style", "display: block");
     display.childNodes[0].innerText = msg;
     this.inGame = false;
-    let select = document.getElementById("game-mode");
     select.disabled = false;
   }
 
+  //iterates through every cell and assigns four possible orientations of four pieces that could win (horiz, vert, diagDR, diagDL)
+  //then checks each orientation that the selected positions are within the bounds of the game
+  //and that the divs contain the same colored pieces as the current player, indicating 
+  //that the current player won the game
   checkForWin() {
     const _win = (cells) => {
       return cells.every(
@@ -190,18 +198,22 @@ class Game {
     }
   }
 
+  //do not handle clicks if inGame=false, or if the current player is the computer player
+  //otherwise make a move and update the player, if next player is the computer, delay, then call on 
+  //the computer to move
   handleClick(evt) {
     if (!this.inGame) return;
-    if (this.numPlayers === '1' && this.currPlayer.number === 2) return;
+    if (this.currPlayer instanceof ComputerPlayer) return;
 
-    let x = +evt.target.id;
+    let x = +evt.target.id; //chosen column
     this.moveAndUpdatePlayer(x);
 
-    if (this.numPlayers === "1" && this.currPlayer === this.p2) {
+    if (this.currPlayer instanceof ComputerPlayer) {
       setTimeout(() => this.playComputerMove(), 500);
     }
   }
 
+  //chose a random available column to place a piece
   playComputerMove() {
     let x = Math.floor(Math.random() * this.width);
     this.moveAndUpdatePlayer(x);
@@ -209,21 +221,26 @@ class Game {
 
   moveAndUpdatePlayer(x) {
     let y = this.findSpotForCol(x);
+    //if there is no spot available, ignore move
     if (y === null) {
       return;
     }
 
+    //update array and UI board positions with the current player's number/piece
     this.board[y][x] = this.currPlayer.number;
     this.placeInTable(y, x);
 
+    //end game if player won
     if (this.checkForWin()) {
       return this.endGame(`Player ${this.currPlayer.number} won!`);
     }
 
+    //end game if players tied
     if (this.board.every((row) => row.every((col) => col !== null))) {
       return this.endGame("It's a Tie!");
     }
 
+    //update current player
     if (this.numPlayers === '1') {
       this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
     } else {
@@ -234,13 +251,12 @@ class Game {
 }
 
 let game = new Game();
-let mode = document.getElementById("game-mode");
-mode.addEventListener("change", handleModeSelect);
-let btn = document.getElementsByTagName("button")[0];
-btn.addEventListener("click", () => game.startGame());
+select.addEventListener("change", handleModeSelect);
+startBtn.addEventListener("click", () => game.startGame());
 
+//update visible form inputs when select menu changes
 function handleModeSelect() {
-  let mode = document.getElementById("game-mode").value;
+  let mode = select.value;
   for (let i = 1; i <= parseInt(mode); i++) {
     let player = document.getElementById(`player${i}`);
     player.setAttribute('style', 'display: block');

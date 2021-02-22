@@ -52,7 +52,7 @@ button {
   margin-top: 0;
 }
 
-.current-piece {
+#current-piece {
   border-radius: 50%;
   height: 50px;
   margin: auto;
