@@ -1,7 +1,7 @@
 "use strict";
 class ComputerPlayer {
   constructor() {
-    this.color = "red";
+    this.color = "blue";
     this.number = 2;
   }
 }
@@ -29,8 +29,8 @@ class Game {
       ) {
         alert("Please enter valid colors.")
         return false;
-      } else if (this.gameMode === "single" && style.color === "red") {
-        alert("You can't use red for single player.");
+      } else if (this.gameMode === "1" && style.color === this.p2.color) {
+        alert(`You can't use ${this.p2.color} for single player.`);
         return false;
       }
     }
@@ -40,19 +40,16 @@ class Game {
   startGame() {
     let select = document.getElementById("game-mode");
     this.gameMode = select.value;
-    let colorInputs;
+    let colorInputs = [];
 
-    if (this.gameMode === "multi") {
-      let color1 = document.getElementById("player1").value;
-      let color2 = document.getElementById("player2").value;
-      colorInputs = [color1, color2];
-      this.p1 = new Player(color1, 1);
-      this.p2 = new Player(color2, 2);
-    } else {
-      let color = document.getElementById("player1").value;
-      colorInputs = [color];
-      this.p1 = new Player(color, 1);
+    if (this.gameMode === '1') {
       this.p2 = new ComputerPlayer();
+    }
+
+    for (let i = 1; i <= parseInt(this.gameMode); i++) {
+      let color = document.getElementById(`player${i}`).value;
+      this[`p${i}`] = new Player(color, i);
+      colorInputs.push(color);
     }
 
     if (!this.validateColors(colorInputs)) return
@@ -65,8 +62,9 @@ class Game {
     this.currPlayer = this.p1;
     this.setCurrentColor();
     select.disabled = true;
-    let currentDisplay = document.getElementById('current');
+    let currentDisplay = document.getElementById('current-player');
     currentDisplay.setAttribute('style', 'display: block');
+
   }
 
   setCurrentColor() {
@@ -193,40 +191,22 @@ class Game {
 
   handleClick(evt) {
     if (!this.inGame) return;
-    if(this.gameMode === 'single' && this.currPlayer.number === 2) return;
+    if (this.gameMode === '1' && this.currPlayer.number === 2) return;
 
     let x = +evt.target.id;
+    this.moveAndUpdatePlayer(x);
 
-    let y = this.findSpotForCol(x);
-    if (y === null) {
-      return;
-    }
-
-    this.board[y][x] = this.currPlayer.number;
-    this.placeInTable(y, x);
-
-    if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer.number} won!`);
-    }
-
-    if (this.board.every((row) => row.every((col) => col !== null))) {
-      return this.endGame("It's a Tie!");
-    }
-
-    this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
-    let currentPiece = document.getElementsByClassName("current-piece")[0];
-    currentPiece.setAttribute(
-      "style",
-      `background-color: ${this.currPlayer.color}`
-    );
-
-    if (this.gameMode === "single" && this.currPlayer === this.p2) {
+    if (this.gameMode === "1" && this.currPlayer === this.p2) {
       setTimeout(() => this.playComputerMove(), 500);
     }
   }
 
   playComputerMove() {
     let x = Math.floor(Math.random() * this.width);
+    this.moveAndUpdatePlayer(x);
+  }
+
+  moveAndUpdatePlayer(x) {
     let y = this.findSpotForCol(x);
     if (y === null) {
       return;
@@ -243,18 +223,16 @@ class Game {
       return this.endGame("It's a Tie!");
     }
 
-    this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
-    let currentPiece = document.getElementsByClassName("current-piece")[0];
-    currentPiece.setAttribute(
-      "style",
-      `background-color: ${this.currPlayer.color}`
-    );
+    if (this.gameMode === '1') {
+      this.currPlayer = this.currPlayer.number === 1 ? this.p2 : this.p1;
+    } else {
+      this.currPlayer = this.currPlayer.number == this.gameMode ? this.p1 : this[`p${this.currPlayer.number + 1}`];
+    }
+    this.setCurrentColor();
   }
 }
 
 let game = new Game();
-let p2 = document.getElementById("player2");
-p2.setAttribute("style", "display: none");
 let mode = document.getElementById("game-mode");
 mode.addEventListener("change", handleModeSelect);
 let btn = document.getElementsByTagName("button")[0];
@@ -262,10 +240,12 @@ btn.addEventListener("click", () => game.startGame());
 
 function handleModeSelect() {
   let mode = document.getElementById("game-mode").value;
-  let p2 = document.getElementById("player2");
-  if (mode === "multi") {
-    p2.setAttribute("style", "display: block");
-  } else {
-    p2.setAttribute("style", "display: none");
+  for (let i = 1; i <= parseInt(mode); i++) {
+    let player = document.getElementById(`player${i}`);
+    player.setAttribute('style', 'display: block');
+  }
+  for (let i = parseInt(mode) + 1; i <= 4; i++) {
+    let player = document.getElementById(`player${i}`);
+    player.setAttribute('style', 'display: none');
   }
 }

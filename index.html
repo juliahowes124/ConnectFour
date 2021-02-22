@@ -9,8 +9,10 @@
     <div class="form">
       <div class="input-div">
         <select name="game-mode" id="game-mode">
-          <option value="single">Single Player</option>
-          <option value="multi">Multi Player</option>
+          <option value="1">1 Player</option>
+          <option value="2">2 Players</option>
+          <option value="3">3 Players</option>
+          <option value="4">4 Players</option>
         </select>
       </div>
       <div class="input-div">
@@ -19,9 +21,15 @@
       <div class="input-div">
         <input type="text" id="player2" placeholder="Color 2"></input>
       </div>
+      <div class="input-div">
+        <input type="text" id="player3" placeholder="Color 3"></input>
+      </div>
+      <div class="input-div">
+        <input type="text" id="player4" placeholder="Color 4"></input>
+      </div>
       <button>START GAME</button>
     </div>
-    <div id="current">
+    <div id="current-player">
       <p>Current Player</p>
       <div class="current-piece"></div>
     </div>
