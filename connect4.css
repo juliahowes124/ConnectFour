@@ -7,17 +7,12 @@ h1 {
   font-size: 2.5rem;
 }
 
-.game-wrapper {
-  display: flex;
-  justify-content: space-around;
-}
-
 /* form inputs */
 .form {
   display: flex;
   flex-direction: column;
   margin: 2rem;
-  width: 15%;
+  width: 200px;
 }
 
 #player1 {
@@ -31,12 +26,6 @@ h1 {
 
 /* start button */
 button {
-  background-color: lightgray;
-  border: none;
-  border-radius: 0.2rem;
-  box-shadow: 1px 1px grey;
-  cursor: pointer;
-  padding: 0.5rem;
   width: fit-content;
 }
 
@@ -44,7 +33,6 @@ button {
 #current-player {
   text-align: center;
   display: none;
-  margin: 2rem;
   width: 15%;
 }
 
@@ -100,7 +88,7 @@ button {
   position: absolute;
   text-align: center;
   top: 30%;
-  width: 30%;
+  width: 40%;
   padding: 1rem;
 }
 

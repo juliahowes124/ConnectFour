@@ -1,32 +1,39 @@
 <!doctype html>
 <head>
   <title>Connect 4</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link href="connect4.css" rel="stylesheet">
 </head>
 <body>
-  <h1>Connect Four</h1>
-  <div class="game-wrapper">
-    <div class="form">
-      <select name="game-mode" id="game-mode">
-        <option value="1">1 Player</option>
-        <option value="2">2 Players</option>
-        <option value="3">3 Players</option>
-        <option value="4">4 Players</option>
-      </select>
-      <input type="text" id="player1" placeholder="Color 1"></input>
-      <input type="text" id="player2" placeholder="Color 2"></input>
-      <input type="text" id="player3" placeholder="Color 3"></input>
-      <input type="text" id="player4" placeholder="Color 4"></input>
-      <button>START GAME</button>
-    </div>
-    <div id="game">
-      <div id="overlay"></div>
-      <div id="winner-display-wrapper"><p></p></div>
-      <table id="board"></table>
-    </div>
-    <div id="current-player">
-      <p>Current Player:</p>
-      <div id="current-piece"></div>
+  <div class="container my-5">
+    <div class="row">
+      <div class="jumbotron">
+        <h1 class="display-4">Connect Four</h1>
+      </div>
+        <div class="col">
+          <div class="form">
+            <select name="game-mode" id="game-mode">
+              <option value="1">1 Player</option>
+              <option value="2">2 Players</option>
+              <option value="3">3 Players</option>
+              <option value="4">4 Players</option>
+            </select>
+            <input type="text" id="player1" placeholder="Color 1"></input>
+            <input type="text" id="player2" placeholder="Color 2"></input>
+            <input type="text" id="player3" placeholder="Color 3"></input>
+            <input type="text" id="player4" placeholder="Color 4"></input>
+            <button type="button" class="btn btn-success">START GAME</button>
+          </div>
+        </div>
+        <div class="col-6 p-0" id="game">
+            <div id="overlay"></div>
+            <div id="winner-display-wrapper"><p></p></div>
+            <table id="board"></table>
+        </div>
+        <div class="col" id="current-player">
+            <p>Current Player:</p>
+            <div id="current-piece"></div>
+        </div>
     </div>
   </div>
   
