@@ -24,6 +24,13 @@ class Game {
     this.height = height;
     this.width = width;
     this.inGame = true;
+    this.currPlayer = null;
+    this.numPlayers = null;
+    this.p1 = null;
+    this.p2 = null;
+    this.p3 = null;
+    this.p4 = null;
+    this.board = null;
   }
 
   /* Ensures that the user entered visible colors, and if single player, did not pick the same color as the computer. */
@@ -266,3 +273,5 @@ function handleModeSelect() {
     player.setAttribute('style', 'display: none');
   }
 }
+
+//ternary for display, merge loops
