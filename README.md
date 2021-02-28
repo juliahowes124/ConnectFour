@@ -5,5 +5,5 @@ JavaScript / OOP / CSS / HTML / Bootstrap
 
 ## Demo
 
-![User Register](https://github.com/juliahowes124/ConnectFour/blob/main/ConnectFour.gif)
+![Connect Four Demo](https://github.com/juliahowes124/ConnectFour/blob/main/ConnectFour.gif)
 
