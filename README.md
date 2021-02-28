@@ -1,6 +1,7 @@
 # ConnectFour
 Rithm School Project
 
+## Tools
 JavaScript / OOP / CSS / HTML / Bootstrap
 
 ## Demo
