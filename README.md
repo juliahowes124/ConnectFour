@@ -1,5 +1,5 @@
 # ConnectFour
-Rithm School Project
+[Rithm School](https://www.rithmschool.com/) Project
 
 ## Tools
 JavaScript / OOP / CSS / HTML / Bootstrap
